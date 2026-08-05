@@ -3,6 +3,7 @@ using XRL.UI;
 using XRL.World;
 using XRL.World.Effects;
 using DaylightMurder.Effects;
+using System.Collections.Generic;
 
 namespace XRL.World.Parts
 {
@@ -28,7 +29,8 @@ namespace XRL.World.Parts
             if (IsImprinted())
             {
                 ApplyEffect(@event.Actor);
-            } else
+            }
+            else
             {
                 ActivatedAbilityId = @event.Implantee.AddDynamicCommand(
                     Name: "Imprint a metabolizing effect",
@@ -115,10 +117,24 @@ namespace DaylightMurder.Effects
 {
     class ExtraMeal : ProceduralCookingEffect
     {
+        public static List<Type> IneligibleUnits = new()
+        {
+            typeof(CookingDomainAttributes_UnitPermanentAllStats_25Percent),
+            typeof(CookingDomainCloning_UnitMultipleClones),
+            typeof(CookingDomainDensity_UnitPermanentAV),
+            typeof(CookingDomainSecrets_RevealSecrets),
+        };
+
         public ExtraMeal(ProceduralCookingEffect Original)
         {
             DisplayName = "{{c|pseudometabolizing}}";
-            units = Original.units;
+            foreach (var unit in Original.units)
+            {
+                if (!IneligibleUnits.Contains(unit.GetType()))
+                {
+                    units.Add(unit);
+                }
+            }
         }
 
         public override string GetDescription()
