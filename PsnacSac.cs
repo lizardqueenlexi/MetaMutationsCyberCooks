@@ -1,8 +1,7 @@
 using System;
 using XRL.UI;
-using XRL.World;
 using XRL.World.Effects;
-using XRL.World.Parts;
+using DaylightMurder.Effects;
 
 namespace XRL.World.Parts
 {
@@ -10,7 +9,7 @@ namespace XRL.World.Parts
     {
         public Guid ActivatedAbilityId = Guid.Empty;
         public string CommandId;
-        public ProceduralCookingEffect MealEffect;
+        public ProceduralCookingEffect ImprintedEffect;
 
         public override bool WantEvent(int ID, int cascade)
         {
@@ -24,7 +23,6 @@ namespace XRL.World.Parts
 
         public override bool HandleEvent(ImplantedEvent @event)
         {
-            AddPlayerMessage("implanted!");
             ActivatedAbilityId = @event.Implantee.AddDynamicCommand(
                 Name: "Imprint a metabolizing effect",
                 Command: out CommandId,
@@ -45,7 +43,6 @@ namespace XRL.World.Parts
 
         public override bool HandleEvent(UnimplantedEvent @event)
         {
-            AddPlayerMessage("unimplanted!");
             RemoveAbility(@event.Actor);
             return base.HandleEvent(@event);
         }
@@ -60,8 +57,8 @@ namespace XRL.World.Parts
                 return false;
             }
             Popup.Show("You feel a dissatisfying suction as your satiety is syphoned away.");
+            ImprintedEffect = effect.DeepCopy(ParentObject.Implantee) as ProceduralCookingEffect;
             ParentObject.Implantee.RemoveEffect(effect);
-            MealEffect = effect.DeepCopy(ParentObject.Implantee) as ProceduralCookingEffect;
             Popup.Show("Distilled satisfaction permeates your metabolism.");
             ApplyMealEffect();
             RemoveAbility(ParentObject.Implantee);
@@ -75,16 +72,26 @@ namespace XRL.World.Parts
 
         public bool ApplyMealEffect()
         {
-            return ParentObject.Implantee.ApplyEffect(new DaylightMurder_ExtraMeal(MealEffect));
+            var effect = new ExtraMeal(ImprintedEffect);
+            effect.Init(ParentObject.Implantee);
+            return ParentObject.Implantee.ApplyEffect(effect);
         }
     }
 }
 
-class DaylightMurder_ExtraMeal : ProceduralCookingEffect
+namespace DaylightMurder.Effects
 {
-    public DaylightMurder_ExtraMeal(ProceduralCookingEffect Original)
+    class ExtraMeal : ProceduralCookingEffect
     {
-        DisplayName = "pseudometabolizing";
-        units = Original.units;
+        public ExtraMeal(ProceduralCookingEffect Original)
+        {
+            DisplayName = "{{c|pseudometabolizing}}";
+            units = Original.units;
+        }
+
+        public override string GetDescription()
+        {
+            return DisplayName;
+        }
     }
 }
