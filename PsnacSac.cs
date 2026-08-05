@@ -1,5 +1,6 @@
 using System;
 using XRL.UI;
+using XRL.World;
 using XRL.World.Effects;
 using DaylightMurder.Effects;
 
@@ -92,6 +93,31 @@ namespace DaylightMurder.Effects
         public override string GetDescription()
         {
             return DisplayName;
+        }
+
+        // There are various circumstances under which ProceduralCookingEffect
+        // is checked for expiry; we will instead not be checking any of them.
+        public override bool HandleEvent(AfterGameLoadedEvent E)
+        {
+            return true;
+        }
+        public override bool HandleEvent(AIBoredEvent E)
+        {
+            return true;
+        }
+
+        public override bool HandleEvent(ZoneThawedEvent E)
+        {
+            return true;
+        }
+
+        public override bool FireEvent(Event @event)
+        {
+            if (@event.ID is "ApplyWellFed" or "BecameHungry" or "BecameFamished" or "ClearFoodEffects" or "RemoveProceduralCookingEffects")
+            {
+                return true;
+            }
+            return base.FireEvent(@event);
         }
     }
 }
