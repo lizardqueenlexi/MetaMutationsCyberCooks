@@ -62,7 +62,7 @@ namespace XRL.World.Parts
             if (effect == null)
             {
                 Popup.Show("Withering hunger briefly tugs at your gut from within.");
-                // TODO: Make you famished
+                target.ApplyEffect(new Famished());
                 return false;
             }
             Popup.Show("You feel a dissatisfying suction as your satiety is syphoned away.");
