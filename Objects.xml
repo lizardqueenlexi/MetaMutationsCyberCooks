@@ -1,10 +1,10 @@
 <objects>
 	<object Name="DaylightMurder_PsnacSac" Inherits="BaseCyberneticsEquipment_5point">
-		<part Name="Physics" Weight="8" />
+		<part Name="Physics" Weight="4" />
 		<part Name="Description" Short="Chrome casing holds the wisp of a thin world line cook trained to the perfect realization of a single dish. The sac of synthmeat beneath is pantry, kitchen, and serving tray in a meticulous braid." />
 		<part Name="Render" DisplayName="PSNAC Sac" Tile="TODO" TileColor="&amp;C" DetailColor="r" />
 		<part Name="CyberneticsBaseItem" Slots="Body" Cost="5" BehaviorDescription="You are able to imprint a single metabolized meal effect into the sac, rendering it permanently active." />
 		<part Name="DaylightMurder_CyberneticsPsnacSac" />
-        <part Name="ItemElements" Elements="salt::6" />
+        <part Name="ItemElements" Elements="salt::3" />
 	</object>
 </objects>
