@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<factions>
+	<faction Name="Birds" Load="Merge">
+		<partreputation About="TonicCraw" Value="50" />
+	</faction>
+	<faction Name="Insects" Load="Merge">
+		<partreputation About="TonicCraw" Value="50" />
+	</faction>
+	<faction Name="Worms" Load="Merge">
+		<partreputation About="TonicCraw" Value="50" />
+	</faction>
+	<faction Name="Mollusks" Load="Merge">
+		<partreputation About="TonicCraw" Value="50" />
+	</faction>
+</factions>

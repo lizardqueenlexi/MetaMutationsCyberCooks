@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mutations Load="Merge">
+	<category Name="Physical" Load="Merge">
+		<mutation Name="Tonic Craw" Cost="4" MaxSelected="1" Class="TonicCraw" Exclusions="" BearerDescription="the crawed" Tile="Mutations/tonic_allergy.bmp" />
+	</category>
+</mutations>

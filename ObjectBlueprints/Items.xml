@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objects>
+	<object Name="Tonic Craw" Inherits="Armor">
+		<part Name="NoBreak" />
+		<part Name="NoDamage" />
+		<part Name="Armor" AV="0" DV="0" WornOn="Body" />
+		<part Name="Render" DisplayName="tonic craw" RenderString="*" Tile="items/sw_wings.bmp" DetailColor="B" />
+		<part Name="Commerce" Value="0" />
+		<part Name="Description" Short="A lump of spongy tissue slow brews harsh tonic into mellow milk." />
+		<part Name="NaturalEquipment" />
+		<part Name="Physics" Category="Natural Armor" IsReal="false" Weight="0" />
+		<removepart Name="TinkerItem" />
+		<intproperty Name="Natural" Value="1" />
+		<tag Name="MutationEquipment" Value="TonicCraw" />
+		<tag Name="ExcludeFromDynamicEncounters" />
+		<tag Name="NoSparkingQuest" />
+		<tag Name="Gender" Value="plural" />
+		<tag Name="AllowArmorDefaultBehavior" />
+		<tag Name="NaturalGear" />
+		<tag Name="VisibleAsDefaultBehavior" />
+		<tag Name="ShowAsPhysicalFeature" />
+		<part Name="Inventory" />
+	</object>
+</objects>
