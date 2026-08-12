@@ -2,5 +2,6 @@
 <mutations Load="Merge">
 	<category Name="Physical" Load="Merge">
 		<mutation Name="Tonic Craw" Cost="4" MaxSelected="1" Class="TonicCraw" Exclusions="" BearerDescription="the crawed" Tile="Mutations/tonic_allergy.bmp" />
+		<mutation Name="Qud-Chewer" Cost="2" MaxSelected="2" Class="QudChewer" Exclusions="" BearerDescription="those who ruminate" Tile="DaylightMurder_MetaMutationsCyberCooks/qudchewer.png" />
 	</category>
 </mutations>
