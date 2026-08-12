@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Policy;
 using HistoryKit;
 using XRL.Collections;
@@ -55,8 +56,8 @@ namespace XRL.World.Parts.Mutation
             // Stow a tonic in the craw. Largely copied from medassist module.
             if (E.Command == "CommandStoreTonic")
             {
-                Inventory inventory = Crawbject.Inventory;
-                if (inventory == null)
+                Inventory inv = Crawbject.Inventory;
+                if (inv == null)
                 {
                     throw new Exception("inventory missing from " + Crawbject.DebugName);
                 }
@@ -66,39 +67,55 @@ namespace XRL.World.Parts.Mutation
                 }
                 else
                 {
-                    using ScopeDisposedList<GameObject> scopeDisposedList = ScopeDisposedList<GameObject>.GetFromPool();
-                    using ScopeDisposedList<GameObject> scopeDisposedList2 = ScopeDisposedList<GameObject>.GetFromPool();
-                    E.Actor.GetContents(scopeDisposedList2);
-                    foreach (GameObject item in scopeDisposedList2)
+                    using var tonics = ScopeDisposedList<GameObject>.GetFromPool();
+                    using var inventory = ScopeDisposedList<GameObject>.GetFromPool();
+                    E.Actor.GetContents(inventory);
+                    foreach (GameObject obj in inventory)
                     {
-                        if (CanBeLoaded(item))
+                        if (CanBeLoaded(obj))
                         {
-                            BodyPart BodyPartContext;
-                            int Relation;
-                            IContextRelationManager RelationManager;
-                            GameObject objectContext = item.GetObjectContext(out BodyPartContext, out Relation, out RelationManager);
-                            if (objectContext != null && objectContext != Crawbject && Relation != 4 && Relation != 6)
+                            GameObject context = obj.GetObjectContext(
+                                out BodyPart bodyPartContext,
+                                out int relation,
+                                out var relationManager
+                            );
+                            if (
+                                context != null
+                                && context != Crawbject
+                            )
                             {
-                                scopeDisposedList.Add(item);
+                                tonics.Add(obj);
                             }
                         }
                     }
-                    if (scopeDisposedList.Count <= 0)
+                    if (tonics.Count <= 0)
                     {
                         E.Actor.Fail("You have no tonics to load.");
                     }
                     else
                     {
-                        GameObject gameObject2 = PickItem.ShowPicker(scopeDisposedList, null, PickItem.PickItemDialogStyle.SelectItemDialog, E.Actor, null, null, null, PreserveOrder: false, null, ShowContext: true);
-                        if (gameObject2 != null)
+                        GameObject tonicToLoad = PickItem.ShowPicker(
+                            Items: tonics,
+                            Actor: E.Actor,
+                            ShowContext: true
+                        );
+                        if (tonicToLoad != null)
                         {
                             E.Actor.PlayWorldSound("Sounds/Interact/sfx_interact_medassistModule_tonic_load");
-                            gameObject2.SplitFromStack();
-                            gameObject2.RemoveFromContext();
-                            inventory.AddObject(gameObject2);
+                            tonicToLoad.SplitFromStack();
+                            tonicToLoad.RemoveFromContext();
+                            inv.AddObject(tonicToLoad);
                             if (E.Actor.IsPlayer())
                             {
-                                Popup.Show("You squirt " + gameObject2.an() + " into your craw.");
+                                Tonic tonicPart = tonicToLoad.GetPart<Tonic>();
+                                if(tonicPart.Eat)
+                                {
+                                    Popup.Show("You mash " + tonicToLoad.an() + " into your craw.");
+                                }
+                                else
+                                {
+                                    Popup.Show("You squirt " + tonicToLoad.an() + " into your craw.");
+                                }
                             }
                             E.Actor.UseEnergy(1000);
                             E.RequestInterfaceExit();
