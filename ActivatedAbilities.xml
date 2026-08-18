@@ -1,0 +1,6 @@
+<activatedabilities>
+	<ability Command="CommandStoreMeal">
+		<description>You store a meal in one of your stomachs, and recall the effect of another stored meal.</description>
+		<UITile Tile="DaylightMurder_MetaMutationsCyberCooks/qudchewer.png" Foreground="w" Detail="W" />
+	</ability>
+</activatedabilities>
