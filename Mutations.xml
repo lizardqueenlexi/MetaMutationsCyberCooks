@@ -4,6 +4,6 @@
 		<mutation Name="Tonic Craw" Cost="4" MaxSelected="1" Class="TonicCraw" Exclusions="" BearerDescription="the crawed" Tile="Mutations/tonic_allergy.bmp" />
 	</category>
 	<category Name="Mental" Load="Merge">
-		<mutation Name="Hypermetabolize" Cost="1" MaxSelected="1" Class="Hypermetabolize" Exclusions="" BearerDescription="those with accelerated metabolisms" Tile="Mutations/adrenal_control.bmp" />
+		<mutation Name="Hypermetabolize" Cost="1" MaxSelected="1" Class="Hypermetabolize" Exclusions="" BearerDescription="those with accelerated metabolisms" Tile="DaylightMurder_ModName/hypermetabolize.png" />
 	</category>
 </mutations>
