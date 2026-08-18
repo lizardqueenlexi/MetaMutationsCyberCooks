@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
+using ConsoleLib.Console;
+using XRL;
 using XRL.World;
 using DaylightMurder.Parts;
+using XRL.World.Parts;
+using XRL.UI;
 
 namespace XRL.World.Parts
 {
@@ -29,7 +34,8 @@ namespace XRL.World.Parts
             if (@event.Type == MorselMembraneAbility.SUPPORT_TYPE && @event.Skip != this)
             {
                 return false; // positive case
-            } else
+            }
+            else
             {
                 return base.HandleEvent(@event);
             }
@@ -80,7 +86,32 @@ namespace DaylightMurder.Parts
         {
             if (@event.Command == COMMAND_NAME)
             {
-                AddPlayerMessage("TODO: morsel membrane");
+                var amount = @event.Actor.GetInstalledCybernetics().FindAll(
+                    item => item.HasPart<DaylightMurder_CyberneticsMorselMembrane>()
+                ).Count;
+                var inventory = @event.Actor.Inventory;
+                var options = new List<string>();
+                var items = new List<GameObject>();
+                var icons = new List<IRenderable>();
+
+                foreach (var item in @event.Actor.GetInventory(
+                    item => item.HasPart<PreparedCookingIngredient>()
+                ))
+                {
+                    options.Add(item.DisplayName);
+                    items.Add(item);
+                    icons.Add(item.Render);
+                }
+
+                var chosenItems = Popup.PickSeveral(
+                    Title: $"Choose up to {amount} food item(s) to subsume.",
+                    Options: options,
+                    Icons: icons,
+                    Amount: amount,
+                    AllowEscape: true
+                );
+
+                AddPlayerMessage("TODO: pseudometabolize");
             }
             return base.HandleEvent(@event);
         }
