@@ -1,4 +1,12 @@
 <objects>
+	<object Name="DaylightMurder_MorselMembrane" Inherits="BaseCyberneticsEquipment_3point">
+		<part Name="Physics" Weight="1" />
+		<part Name="Description" Short="Thin silver teeth zip the end of a flat bleb to be fitted under the skin where the fasting aristocrat may store a flavor for slow indulgence." />
+		<part Name="Render" DisplayName="morsel membrane" Tile="TODO" TileColor="&amp;C" DetailColor="r" />
+		<part Name="CyberneticsBaseItem" Slots="Hands,Feet,Body,Back,Face,Arm,Head" Cost="3" BehaviorDescription="You may feed the membrane one ingredient, gaining its simple cooking effect until hungry." />
+		<part Name="DaylightMurder_CyberneticsMorselMembrane" />
+        <part Name="ItemElements" Elements="salt::2" />
+	</object>
 	<object Name="DaylightMurder_PsnacSac" Inherits="BaseCyberneticsEquipment_5point">
 		<part Name="Physics" Weight="4" />
 		<part Name="Description" Short="Chrome casing holds the wisp of a thin world line cook trained to the perfect realization of a single dish. The sac of synthmeat beneath is pantry, kitchen, and serving tray in a meticulous braid." />
