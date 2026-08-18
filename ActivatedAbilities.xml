@@ -1,0 +1,6 @@
+<activatedabilities>
+	<ability Command="CommandMetabolize">
+		<description>You quicken your metabolism to instantly heal.</description>
+		<UITile Tile="DaylightMurder_ModName/hypermetabolize.png" Foreground="w" Detail="W" />
+	</ability>
+</activatedabilities>
