@@ -1,0 +1,6 @@
+<activatedabilities>
+    <ability Command="DaylightMurder_CommandSubsume">
+        <description>TODO</description>
+        <UITile Tile="DaylightMurder/morselmembrane" Foreground="C" Detail="r" />
+    </ability>
+</activatedabilities>
