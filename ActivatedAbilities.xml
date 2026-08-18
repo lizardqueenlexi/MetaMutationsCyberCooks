@@ -1,0 +1,10 @@
+<activatedabilities>
+	<ability Command="CommandStoreTonic">
+		<description>You store one held tonic into your craw.</description>
+		<UITile Tile="DaylightMurder_ModName/toniccraw.png" Foreground="w" Detail="W" />
+	</ability>
+	<ability Command="CommandGulpTonics">
+		<description>You milk your craw, gulping down all stored tonics.</description>
+		<UITile Tile="DaylightMurder_ModName/milkcraw.png" Foreground="w" Detail="W" />
+	</ability>
+</activatedabilities>
