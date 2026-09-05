@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConsoleLib.Console;
-using XRL;
+using XRL.Language;
 using XRL.World;
 using DaylightMurder.Parts;
 using XRL.World.Parts;
@@ -92,6 +93,7 @@ namespace DaylightMurder.Parts
                 var inventory = @event.Actor.Inventory;
                 var options = new List<string>();
                 var items = new List<GameObject>();
+                var stacks = new List<int>();
                 var icons = new List<IRenderable>();
 
                 foreach (var item in @event.Actor.GetInventory(
@@ -100,19 +102,39 @@ namespace DaylightMurder.Parts
                 {
                     options.Add(item.DisplayName);
                     items.Add(item);
+                    stacks.Add(item.Count);
                     icons.Add(item.Render);
                 }
 
-                var chosenItems = Popup.PickSeveral(
-                    Title: $"Choose up to {amount} food item(s) to subsume.",
-                    Options: options,
-                    Icons: icons,
-                    Amount: amount,
-                    AllowEscape: true
-                );
+                List<(int Selected, int Amount)> chosenItems;
+                while (true)
+                {
+                    chosenItems = Popup.PickSeveral(
+                        Title: $"Choose up to {amount} food item(s) to subsume.",
+                        Options: options,
+                        Stacks: stacks,
+                        Icons: icons,
+                        Amount: amount,
+                        AllowEscape: true
+                    );
+
+                    if (chosenItems == null)
+                    {
+                        return base.HandleEvent(@event);
+                    }
+
+                    if (chosenItems.Sum(choice => choice.Amount) > amount)
+                    {
+                        Popup.Show($"You cannot select more than {Grammar.Cardinal(amount)} options!");
+                        continue;
+                    }
+
+                    break;
+                }
 
                 AddPlayerMessage("TODO: pseudometabolize");
             }
+
             return base.HandleEvent(@event);
         }
 
