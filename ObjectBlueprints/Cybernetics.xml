@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objects>
+	<object Name="DaylightMurder_InternalApex" Inherits="BaseCyberneticsEquipment_6point">
+		<part Name="Physics" Weight="1" /> <!-- TODO: tweak -->
+		<part Name="Description" Short="TODO" />
+		<part Name="Render" DisplayName="{{Y|internal apex}}" /> <!-- TODO: tile + coloring -->
+		<part Name="CyberneticsBaseItem" Slots="Face" Cost="6" BehaviorDescription="TODO" />
+		<part Name="DaylightMurder_CyberneticsInternalApex" />
+		<part Name="CyberneticsStatModifier" Stats="Ego:3;AV:2" />
+		<part Name="Metal" />
+		<part Name="NoDamage" />
+		<part Name="NoRust" />
+		<part Name="ItemElements" Elements="ice::6;;circuitry::3" /> <!-- TODO: tweak -->
+		<tag Name="CyberneticsUsesEqSlot" />
+		<tag Name="CyberneticsNoRemove" />
+		<!-- TODO: auto drinking? -->
+		<!-- TODO: can't be dismembered -->
+		<!-- TODO: quickness bonus (scales w/ compute) -->
+	</object>
+</objects>
