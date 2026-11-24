@@ -4,9 +4,11 @@ using System.Linq;
 using ConsoleLib.Console;
 using XRL.Language;
 using XRL.World;
-using DaylightMurder.Parts;
+using XRL.World.Effects;
 using XRL.World.Parts;
 using XRL.UI;
+using DaylightMurder.Effects;
+using DaylightMurder.Parts;
 
 namespace XRL.World.Parts
 {
@@ -87,7 +89,7 @@ namespace DaylightMurder.Parts
         {
             if (@event.Command == COMMAND_NAME)
             {
-                var amount = @event.Actor.GetInstalledCybernetics().FindAll(
+                var maxAmount = @event.Actor.GetInstalledCybernetics().FindAll(
                     item => item.HasPart<DaylightMurder_CyberneticsMorselMembrane>()
                 ).Count;
                 var inventory = @event.Actor.Inventory;
@@ -106,33 +108,48 @@ namespace DaylightMurder.Parts
                     icons.Add(item.Render);
                 }
 
-                List<(int Selected, int Amount)> chosenItems;
+                List<(int Selected, int Amount)> choices;
                 while (true)
                 {
-                    chosenItems = Popup.PickSeveral(
-                        Title: $"Choose up to {amount} food item(s) to subsume.",
+                    choices = Popup.PickSeveral(
+                        Title: $"Choose up to {maxAmount} food item(s) to subsume.",
                         Options: options,
                         Stacks: stacks,
                         Icons: icons,
-                        Amount: amount,
+                        Amount: maxAmount,
                         AllowEscape: true
                     );
 
-                    if (chosenItems == null)
+                    if (choices.IsNullOrEmpty())
                     {
-                        return base.HandleEvent(@event);
+                        break;
                     }
 
-                    if (chosenItems.Sum(choice => choice.Amount) > amount)
+                    if (choices.Sum(choice => choice.Amount) > maxAmount)
                     {
-                        Popup.Show($"You cannot select more than {Grammar.Cardinal(amount)} options!");
+                        Popup.Show($"You cannot select more than {Grammar.Cardinal(maxAmount)} options!");
                         continue;
                     }
 
+                    var types = new List<string>();
+                    foreach (var choice in choices)
+                    {
+                        var item = items[choice.Selected];
+                        var amount = choice.Amount;
+                        item.SplitStack(amount);
+
+                        for (var n = 0; n < amount; n++)
+                        {
+                            var ingredient = item.GetPart<PreparedCookingIngredient>();
+                            types.Add(ingredient.GetTypeInstance());
+                        }
+                    }
+
+                    var effect = new Micrometabolizing(ProceduralCookingEffect.CreateJustUnits(types));
+                    effect.Init(@event.Actor);
+                    @event.Actor.ApplyEffect(effect);
                     break;
                 }
-
-                AddPlayerMessage("TODO: pseudometabolize");
             }
 
             return base.HandleEvent(@event);
@@ -145,6 +162,36 @@ namespace DaylightMurder.Parts
                 ParentObject.RemovePart(this);
             }
             return base.HandleEvent(@event);
+        }
+    }
+}
+
+namespace DaylightMurder.Effects
+{
+    class Micrometabolizing : ProceduralCookingEffect
+    {
+        public Micrometabolizing(ProceduralCookingEffect Original)
+        {
+            DisplayName = "{{c|micrometabolizing}}";
+
+            foreach (var unit in Original.units)
+            {
+                units.Add(unit);
+            }
+        }
+
+        public override string GetDescription()
+        {
+            return DisplayName;
+        }
+
+        public override bool FireEvent(Event @event)
+        {
+            if (@event.ID is "ClearFoodEffects" or "RemoveProceduralCookingEffects")
+            {
+                return true;
+            }
+            return base.FireEvent(@event);
         }
     }
 }
