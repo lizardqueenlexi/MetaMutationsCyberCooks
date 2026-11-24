@@ -60,7 +60,7 @@ namespace XRL.World.Parts
 
         public bool Imprint(GameObject target)
         {
-            var effect = ParentObject.Implantee.GetEffect<ProceduralCookingEffect>();
+            var effect = ParentObject.Implantee.GetEffectDescendedFrom<ProceduralCookingEffect>();
             if (effect == null)
             {
                 Popup.Show("Withering hunger briefly tugs at your gut from within.");
